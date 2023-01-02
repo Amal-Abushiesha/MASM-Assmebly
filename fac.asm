@@ -32,5 +32,4 @@ jnz _loop
 
 printf("factorial \n is %u " , eax) 
 
-
 end start
