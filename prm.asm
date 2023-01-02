@@ -23,7 +23,12 @@ call StdIn
 mov eax,txt2dw(offset num)
 mov ebx,eax
 mov ecx,2d
- 
+
+
+cmp ebx,1
+je _NOTPRIME
+cmp ebx,2
+je _prime 
 
 _loop:
 mov eax , ebx
@@ -35,6 +40,7 @@ je _NOTPRIME
 cmp ecx , ebx
 jl _loop
 
+_prime:
 printf("Is Prime")
 jmp _exit
 
