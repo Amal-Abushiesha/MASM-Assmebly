@@ -6,7 +6,6 @@ invoke atodw, reparg(sz$)
 EXITM <eax>
 ENDM
 
-
 .data
 num dword 1 dup(?)
 two dword 2
