@@ -1,19 +1,15 @@
 .386
-.model flat, stdcall
-option casemap:none
 include \masm32\include\masm32rt.inc
 
 txt2dw MACRO sz$
- invoke atodw, reparg(sz$) 
- EXITM <eax>
- ENDM
- .data
- lpBuffer dword 12 dup(?)
- tx123 db "12", 0
- num db 50 dup(?)
- p db "prime",0
- ten dword 10d
- 
+invoke atodw , reparg(sz$)
+EXITM <eax>
+ENDM
+
+.data
+num dword 50 dup(?)
+ten dword 10
+
 .code
 start:
 
@@ -21,33 +17,41 @@ push 50
 push offset num
 call StdIn
 
-mov ebx,txt2dw(offset num)
-mov eax,ebx
+mov eax, txt2dw( offset num)
+xor ebx , ebx
 
-_loop1:
-xor edx,edx
+
+;123 --> 1 2 3 << 3 2 1
+;stack 3 2 1 -> pop 1 2 3
+;div again 
+
+_addstack:
+xor edx , edx
 div ten
 push edx
-cmp eax,0
-jg _loop1
+cmp eax , 0d
+jg _addstack
 
-mov eax,ebx
+;321
 
-_test:
-xor edx,edx
+mov eax, txt2dw( offset num)
+
+_ifpal:
+xor ebx , ebx
+xor edx , edx
 div ten
-pop lpBuffer
-cmp edx,lpBuffer
-jne _not
-cmp eax, 0
-jg _test
+pop ebx
+cmp ebx , edx
+jne _notPal
+cmp eax , 0d
+jg _ifpal
 
-
-_pal:
-printf("%u palindrom" ,ebx)
+printf("Palindrome")
 jmp _exit
-_not:
-printf("%u not palindrom" ,ebx)
+
+_notPal:
+printf("Not Palindrome")
+
 
 _exit:
-end start 
+end start
